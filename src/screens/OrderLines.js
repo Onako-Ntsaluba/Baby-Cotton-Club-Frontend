@@ -1,11 +1,26 @@
+// Currency formatter for ZAR
+const formatCurrency = (amount) =>
+  new Intl.NumberFormat("en-ZA", {
+    style: "currency",
+    currency: "ZAR",
+    minimumFractionDigits: 2,
+  }).format(amount);
 import React, { useEffect, useState } from "react";
 // import api from "../api/api";
 
+const productImages = {
+  "Baby Blanket": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+  "Cotton Onesie": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+  "Baby Hat": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80"
+};
 
-function OrderLines() {
+
+
+function OrderLines({ isAuthenticated }) {
   const [orderLines, setOrderLines] = useState([]);
   const [orderIdFilter, setOrderIdFilter] = useState("");
   const [search, setSearch] = useState("");
+  const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
     // Mock data for frontend-only use
@@ -51,62 +66,46 @@ function OrderLines() {
   const total = filteredLines.reduce((sum, line) => sum + line.price * line.quantity, 0);
 
   return (
-    <div>
-      <h2>Order Lines</h2>
-      <div style={{marginBottom: 16, display: 'flex', gap: 16}}>
-        <div>
-          <label>Filter by Order ID: </label>
-          <input
-            type="number"
-            min="1"
-            value={orderIdFilter}
-            onChange={e => setOrderIdFilter(e.target.value)}
-            style={{width: 80}}
-            placeholder="All"
-          />
-        </div>
-        <div>
-          <label>Search Product: </label>
-          <input
-            type="text"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Name or SKU"
-          />
-        </div>
+    <div className="products-page">
+      <h2 className="products-title">Shop Our Baby Cotton Collection</h2>
+      <div className="products-search-bar">
+        <input
+          type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search for clothes (name or SKU)"
+        />
       </div>
-      <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Order ID</th>
-            <th>Product</th>
-            <th>SKU</th>
-            <th>Quantity</th>
-            <th>Price ($)</th>
-            <th>Subtotal ($)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredLines.map(line => (
-            <tr key={line.orderLineId}>
-              <td>{line.orderLineId}</td>
-              <td>{line.orderId}</td>
-              <td>{line.productName}</td>
-              <td>{line.productSKU}</td>
-              <td>{line.quantity}</td>
-              <td>{line.price.toFixed(2)}</td>
-              <td>{(line.price * line.quantity).toFixed(2)}</td>
-            </tr>
-          ))}
-          {filteredLines.length > 0 && (
-            <tr style={{fontWeight: 'bold', background: '#e9eef3'}}>
-              <td colSpan={6} style={{textAlign: 'right'}}>Total:</td>
-              <td>${total.toFixed(2)}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <div className="products-grid">
+        {filteredLines.map(line => (
+          <div className="product-card" key={line.orderLineId}>
+            <img
+              src={productImages[line.productName] || 'https://via.placeholder.com/200x200?text=No+Image'}
+              alt={line.productName}
+              className="product-image"
+            />
+            <div className="product-info">
+              <h3 className="product-name">{line.productName}</h3>
+              <div className="product-sku">SKU: {line.productSKU}</div>
+              <div className="product-price">{formatCurrency(line.price)}</div>
+            </div>
+            {isAuthenticated ? (
+              <button className="auth-btn product-buy-btn" onClick={() => alert('Buying...')}>Buy</button>
+            ) : (
+              <button className="auth-btn product-buy-btn" onClick={() => setShowPrompt(true)}>Buy</button>
+            )}
+          </div>
+        ))}
+      </div>
+      {filteredLines.length === 0 && (
+        <div className="products-empty">No products found.</div>
+      )}
+      {showPrompt && (
+        <div className="products-login-prompt">
+          Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to buy clothes.
+          <button className="products-close-btn" onClick={()=>setShowPrompt(false)}>Close</button>
+        </div>
+      )}
     </div>
   );
 }
