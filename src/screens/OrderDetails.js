@@ -1,38 +1,7 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
 
-// Mock data for demonstration
-const mockOrders = [
-  {
-    orderId: 1,
-    orderDate: "2025-08-10",
-    totalAmount: 250.0,
-    customer: { firstName: "Alice", lastName: "Smith", email: "alice@email.com" },
-    status: "Shipped",
-    orderLines: [
-      { orderLineId: 1, productName: "Baby Blanket", productSKU: "BB-001", quantity: 2, price: 50.0 },
-      { orderLineId: 2, productName: "Cotton Onesie", productSKU: "CO-002", quantity: 3, price: 30.0 }
-    ]
-  },
-  {
-    orderId: 2,
-    orderDate: "2025-08-11",
-    totalAmount: 300.0,
-    customer: { firstName: "Bob", lastName: "Johnson", email: "bob@email.com" },
-    status: "Processing",
-    orderLines: [
-      { orderLineId: 3, productName: "Baby Hat", productSKU: "BH-003", quantity: 1, price: 20.0 }
-    ]
-  },
-  {
-    orderId: 3,
-    orderDate: "2025-08-12",
-    totalAmount: 150.0,
-    customer: { firstName: "Carol", lastName: "Williams", email: "carol@email.com" },
-    status: "Delivered",
-    orderLines: []
-  }
-];
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { fetchOrderDetails } from "../api/api";
 
 
 const formatCurrency = (amount) =>
@@ -42,21 +11,33 @@ const formatCurrency = (amount) =>
     minimumFractionDigits: 2,
   }).format(amount);
 
+
 function OrderDetails({ user }) {
   const { orderId } = useParams();
-  const order = mockOrders.find(o => o.orderId === Number(orderId));
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!user) {
-    return (
-      <div className="orders-empty">
-        Please <Link to="/login">log in</Link> to view order details.
-      </div>
-    );
-  }
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const data = await fetchOrderDetails(orderId);
+        setOrder(data);
+      } catch (err) {
+        setError("Order not found or failed to load.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrder();
+  }, [orderId]);
 
-  if (!order) return <div className="orders-empty">Order not found.</div>;
 
-  if (order.customer.email !== user.email) {
+
+
+  if (loading) return <div className="orders-empty">Loading order...</div>;
+  if (error || !order) return <div className="orders-empty">{error || "Order not found."}</div>;
+  if (order.customer?.email && order.customer.email !== user.email) {
     return <div className="orders-empty">You are not authorized to view this order.</div>;
   }
 
@@ -89,7 +70,11 @@ function OrderDetails({ user }) {
           <tbody>
             {order.orderLines.map(line => (
               <tr key={line.orderLineId}>
-                <td>{line.productName}</td>
+                <td>
+                  <Link to={`/orderlines/${line.orderLineId}`}>
+                    {line.productName}
+                  </Link>
+                </td>
                 <td>{line.productSKU}</td>
                 <td>{line.quantity}</td>
                 <td>{formatCurrency(line.price)}</td>
