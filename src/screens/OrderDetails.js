@@ -34,7 +34,7 @@ const mockOrders = [
   }
 ];
 
-// Currency formatter for ZAR
+
 const formatCurrency = (amount) =>
   new Intl.NumberFormat("en-ZA", {
     style: "currency",
