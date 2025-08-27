@@ -1,3 +1,8 @@
+// Fetch all products
+export const fetchProducts = async () => {
+  const res = await api.get("/product/getall");
+  return res.data;
+};
 // Fetch order line details by orderLineId
 export const fetchOrderLineDetails = async (orderLineId) => {
   const res = await api.get(`/api/orderline/read/${orderLineId}`);
