@@ -63,7 +63,7 @@ function SignUp() {
         <button className="auth-btn" type="submit">Sign Up</button>
       </form>
       <div className="auth-footer">
-        <span>Already have an account?</span> <a href="/login">Login</a>
+        <span>Already have an account?</span> <a href="/login" style={{ textDecoration: 'underline', color: '#d32f2f', fontWeight: 600 }}>Login</a>
       </div>
     </div>
   );
