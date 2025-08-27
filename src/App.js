@@ -5,7 +5,8 @@ import Orders from "./screens/Orders";
 // import Customers from "./screens/Customers";
 import OrderLines from "./screens/OrderLines";
 import OrderDetails from "./screens/OrderDetails";
-import CreateOrder from "./screens/CreateOrder";
+import OrderLineDetails from "./screens/OrderLineDetails";
+
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import Navbar from "./components/Navbar";
@@ -25,12 +26,13 @@ function App() {
           <Route path="/" element={<Home />} />
           {/* Orders routes moved below to pass user prop */}
           {/* <Route path="/customers" element={<Customers />} /> */}
-          <Route path="/create-order" element={<CreateOrder />} />
+
           <Route path="/login" element={<Login login={login} />} />
           <Route path="/signup" element={<SignUp login={login} />} />
           <Route path="/order-lines" element={<OrderLines isAuthenticated={isAuthenticated} user={user} />} />
           <Route path="/orders" element={<Orders user={user} />} />
           <Route path="/orders/:orderId" element={<OrderDetails user={user} />} />
+          <Route path="/orderlines/:orderLineId" element={<OrderLineDetails />} />
         </Routes>
       </div>
     </Router>
