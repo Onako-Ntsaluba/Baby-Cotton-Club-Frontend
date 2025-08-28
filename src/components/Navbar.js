@@ -22,6 +22,7 @@ function Navbar({ isAuthenticated, logout }) {
 			<nav className="flex items-center gap-6" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 				<NavLink to="/" end className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Home</NavLink>
 				<NavLink to="/order-lines" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Shop</NavLink>
+				<NavLink to="/category" className={({ isActive }) => isActive ? "nav-link active" : "nav-link" }  >Categories </NavLink>
 				<NavLink to="/orders" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Orders</NavLink>
 			</nav>
 

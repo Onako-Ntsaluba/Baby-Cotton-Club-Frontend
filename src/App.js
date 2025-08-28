@@ -74,6 +74,7 @@ export default function Home() {
                         <button>Login</button>
                         <button>Register</button>
                         <button>Orders</button>
+                        <button>Categories</button>
                         <button>My Account</button>
                     </div>
                     <div className="icons">
