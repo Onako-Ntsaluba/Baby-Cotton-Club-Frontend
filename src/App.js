@@ -1,61 +1,21 @@
-import img_1 from "./assets/img_1.png"
-import img from "./assets/img.png";
-import onesie from "./assets/onesie.webp";
-
-import banner1 from "./assets/banner1.webp";
-import banner2 from "./assets/banner2.jpg";
-import banner3 from "./assets/banner3.webp";
-
-import { FaHeart, FaShoppingCart } from "react-icons/fa";
-
-
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./screens/Home";
+import OrderLines from "./screens/OrderLines";
+import Orders from "./screens/Orders";
+import Customers from "./screens/Customers";
+import Login from "./screens/Login";
+import SignUp from "./screens/SignUp";
+import CreateOrder from "./screens/CreateOrder";
+import OrderDetails from "./screens/OrderDetails";
+import OrderLineDetails from "./screens/OrderLineDetails";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import "./App.css";
 
-// Sample products
-const products = [
-    {
-        id: 1,
-        name: "Baby Cotton Onesie",
-        brand: "Baby Cotton Club",
-        price: "R 199",
-        image: onesie,},
-    {
-        id: 2,
-        name: "Soft Cotton Blanket",
-        brand: "Baby Cotton Club",
-        price: "R 250",
-        image: img,},
-    {
-        id: 3,
-        name: "Baby Booties",
-        brand: "Baby Cotton Club",
-        price: "R 120",
-        image: img_1,
-    },
-];
-
-// Banner images
-const bannerImages = [banner1, banner2, banner3];
-
-
-export default function Home() {
-    const [currentBanner, setCurrentBanner] = useState(0);
-    const [fade, setFade] = useState(true);
-
-    // Banner auto-slide with fade
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setFade(false);
-            setTimeout(() => {
-                setCurrentBanner((prev) => (prev + 1) % bannerImages.length);
-                setFade(true);
-            }, 500); // fade-out duration
-        }, 4000); // change every 4 seconds
-        return () => clearInterval(interval);
-    }, []);
-
+function App() {
     return (
+
         <div className="app">
 
             {/* Header */}
@@ -134,7 +94,24 @@ export default function Home() {
             {/* Footer */}
             <footer>© 2025 Baby Cotton Club | All Rights Reserved</footer>
         </div>
+
+        <Router>
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/order-lines" element={<OrderLines />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/customers" element={<Customers />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/create-order" element={<CreateOrder />} />
+                <Route path="/order-details/:id" element={<OrderDetails />} />
+                <Route path="/order-line-details/:id" element={<OrderLineDetails />} />
+            </Routes>
+            <Footer />
+        </Router>
+
     );
 }
 
-
+export default App;
