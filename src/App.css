@@ -275,6 +275,65 @@ footer {
 }
 
 
+.review-section {
+	margin-top: 1rem;
+	width: 100%;
+}
+
+.review-title {
+	font-size: 1.2rem;
+	font-weight: 600;
+	color: #2d3748;
+	margin-bottom: 0.5rem;
+}
+
+.review-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+}
+
+.review-card {
+	background: #f9fafb;
+	border-radius: 8px;
+	padding: 0.8rem 1rem;
+	box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.review-card-header {
+	display: flex;
+	justify-content: space-between;
+	font-weight: 600;
+}
+
+.review-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	margin-top: 0.8rem;
+}
+
+.review-form input,
+.review-form textarea,
+.review-form select {
+	padding: 0.6rem;
+	border-radius: 6px;
+	border: 1px solid #cbd5e1;
+}
+
+.review-form button {
+	background: #5a67d8;
+	color: #fff;
+	border: none;
+	padding: 0.6rem;
+	border-radius: 6px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.review-form button:hover {
+	background: #434190;
+}
 
 
 
