@@ -1,65 +1,103 @@
-import React from "react";
+import img_1 from "../assets/img_1.png";
+import img from "../assets/img.png";
+import onesie from "../assets/onesie.webp";
+import banner1 from "../assets/banner1.webp";
+import banner2 from "../assets/banner2.jpg";
+import banner3 from "../assets/banner3.webp";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "../App.css";
 
-function Home() {
-  return (
-    <div>
-      {/* Hero Section */}
-      <section className="hero-section" style={{
-        background: "linear-gradient(90deg, #fff 60%, #ffeaea 100%)",
-        padding: "3rem 1rem 2rem 1rem",
-        textAlign: "center",
-        borderRadius: "18px",
-        margin: "2rem auto 2rem auto",
-        maxWidth: 900,
-        boxShadow: "0 4px 32px rgba(0,0,0,0.07)"
-      }}>
-        <h1 style={{ fontSize: "2.7rem", fontWeight: 700, color: "#d32f2f", marginBottom: 12 }}>
-          BOGO 50% Off Baby Cotton!
-        </h1>
-        <p style={{ fontSize: "1.3rem", color: "#222", marginBottom: 24 }}>
-          Shop our softest essentials and new arrivals. Limited time only!
-        </p>
-        <a href="/order-lines" className="btn" style={{ fontSize: "1.15em" }}>Shop Now</a>
-      </section>
+const products = [
+    {
+        id: 1,
+        name: "Baby Cotton Onesie",
+        brand: "Baby Cotton Club",
+        price: "R 199",
+        image: onesie,
+    },
+    {
+        id: 2,
+        name: "Soft Cotton Blanket",
+        brand: "Baby Cotton Club",
+        price: "R 250",
+        image: img,
+    },
+    {
+        id: 3,
+        name: "Baby Booties",
+        brand: "Baby Cotton Club",
+        price: "R 120",
+        image: img_1,
+    },
+];
 
-      {/* Featured Collections */}
-      <section className="featured-collections" style={{
-        display: "flex",
-        gap: "2rem",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        margin: "2rem auto",
-        maxWidth: 900
-      }}>
-        <div className="collection-card" style={{
-          background: "#fff",
-          borderRadius: "14px",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-          padding: "2rem 1.5rem",
-          textAlign: "center",
-          width: 260
-        }}>
-          <img src="https://images.unsplash.com/photo-1519864600265-abb23843a6c1?auto=format&fit=crop&w=400&q=80" alt="New Arrivals" style={{ width: "100%", borderRadius: "10px", marginBottom: 16 }} />
-          <h2 style={{ fontSize: "1.3rem", fontWeight: 700, color: "#d32f2f", marginBottom: 8 }}>New Arrivals</h2>
-          <p style={{ color: "#222", marginBottom: 12 }}>Fresh styles for every little one.</p>
-          <a href="/order-lines?category=baby&type=new arrivals" className="btn" style={{ fontSize: "1em" }}>Shop New</a>
+const bannerImages = [banner1, banner2, banner3];
+
+export default function Home() {
+    const [currentBanner, setCurrentBanner] = useState(0);
+    const [fade, setFade] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setFade(false);
+            setTimeout(() => {
+                setCurrentBanner((prev) => (prev + 1) % bannerImages.length);
+                setFade(true);
+            }, 500);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className="app">
+            {/* Banner */}
+            <div className="banner">
+                <img
+                    src={bannerImages[currentBanner]}
+                    alt="Banner"
+                    className={fade ? "fade-in" : "fade-out"}
+                />
+                <div className="banner-text">Want It Now?</div>
+            </div>
+            {/* Main Layout */}
+            <div className="main">
+                {/* Sidebar */}
+                <aside className="sidebar">
+                    <h2>Refine by Category</h2>
+                    <ul>
+                        <li>All Products</li>
+                        <li>Clothes</li>
+                        <li>Toys</li>
+                        <li>Accessories</li>
+                        <li>See More</li>
+                    </ul>
+                    <div className="filters">
+                        <h2>Filters</h2>
+                        <label>
+                            <input type="checkbox" defaultChecked /> In Stock
+                        </label>
+                    </div>
+                </aside>
+                {/* Product Grid */}
+                <main className="product-grid">
+                    {products.map((product) => (
+                        <div key={product.id} className="product-card">
+                            <img src={product.image} alt={product.name} />
+                            <div className="product-info">
+                                <h3>{product.name}</h3>
+                                <p>{product.brand}</p>
+                                <p className="price">{product.price}</p>
+                                <button onClick={() => alert(`Added ${product.name} to cart!`)}>Add to Cart</button>
+                            </div>
+                        </div>
+                    ))}
+                </main>
+            </div>
+            {/* Footer */}
+            <footer>© 2025 Baby Cotton Club | All Rights Reserved</footer>
         </div>
-        <div className="collection-card" style={{
-          background: "#fff",
-          borderRadius: "14px",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-          padding: "2rem 1.5rem",
-          textAlign: "center",
-          width: 260
-        }}>
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Essentials" style={{ width: "100%", borderRadius: "10px", marginBottom: 16 }} />
-          <h2 style={{ fontSize: "1.3rem", fontWeight: 700, color: "#d32f2f", marginBottom: 8 }}>Essentials</h2>
-          <p style={{ color: "#222", marginBottom: 12 }}>Everyday comfort, always in style.</p>
-          <a href="/order-lines?category=baby&type=essentials" className="btn" style={{ fontSize: "1em" }}>Shop Essentials</a>
-        </div>
-      </section>
-    </div>
-  );
+    );
 }
-
-export default Home;
