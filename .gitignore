@@ -1,18 +1,35 @@
 
-# Node dependencies
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
+node_modules
+common/node_modules
+mobile-app\node_modules
 yarn.lock
-.pnpm-debug.log*
-
-# Build output
-dist/
-build/
-
-# Misc
-.env
+web-app/node_modules
+.firebase/hosting.d2ViLWFwcC9idWlsZA.cache
+mobile-app\dist
+public
+web-app\build
+mobile-app/dist
 .DS_Store
-*.log
+mobile-app/.DS_Store
+mobile-app/assets/.DS_Store
+.DS_Store
+common/.DS_Store
+common/src/.DS_Store
+mobile-app/assets/apinexusicons/.DS_Store
+mobile-app/assets/nuk-icons/.DS_Store
+mobile-app/assets/apinexusicons/white-24dp-enquiries/.DS_Store
+mobile-app/navigation/AuthStack/.DS_Store
+functions/providers/.DS_Store
+web-app/.DS_Store
+mobile-app/.DS_Store
+functions/.DS_Store
+mobile-app/navigation/.DS_Store
+mobile-app/.DS_Store
+web-app/build
+
+common/dist
+
+
+
+
+

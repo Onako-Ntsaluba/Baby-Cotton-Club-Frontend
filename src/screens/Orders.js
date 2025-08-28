@@ -5,45 +5,31 @@ const formatCurrency = (amount) =>
     currency: "ZAR",
     minimumFractionDigits: 2,
   }).format(amount);
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { fetchOrdersByCustomer } from "../api/api";
 
 function Orders({ user }) {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    // Mock data for frontend-only use, now with email
-    const mockOrders = [
-      {
-        orderId: 1,
-        orderDate: "2025-08-10",
-        totalAmount: 250.0,
-        customer: { firstName: "Alice", lastName: "Smith", email: "alice@email.com" },
-        status: "Shipped"
-      },
-      {
-        orderId: 2,
-        orderDate: "2025-08-11",
-        totalAmount: 300.0,
-        customer: { firstName: "Bob", lastName: "Johnson", email: "bob@email.com" },
-        status: "Processing"
-      },
-      {
-        orderId: 3,
-        orderDate: "2025-08-12",
-        totalAmount: 150.0,
-        customer: { firstName: "Carol", lastName: "Williams", email: "carol@email.com" },
-        status: "Delivered"
+    if (!user) return;
+    const fetchOrders = async () => {
+      try {
+        const data = await fetchOrdersByCustomer(user.email);
+        setOrders(data);
+      } catch (err) {
+        setOrders([]);
       }
-    ];
-    setOrders(mockOrders);
-  }, []);
+    };
+    fetchOrders();
+  }, [user]);
 
-  if (!user) {
-    return <div className="orders-empty">Please <Link to="/login">log in</Link> to view your orders.</div>;
-  }
 
-  const userOrders = orders.filter(order => order.customer.email === user.email);
+
+  // If backend already filters by user, just use orders
+  const userOrders = orders;
 
   return (
     <div className="orders-page">
